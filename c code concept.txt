@@ -1,0 +1,500 @@
+#include <stdio.h>
+#include <ctype.h>
+/* Global declarations */
+/* Variables */
+int charClass;
+char lexeme [100];
+char nextChar;
+int lexLen;
+int token;
+int nextToken;
+FILE *in_fp, *fopen();
+/* Function declarations */
+void addChar();
+void getChar();
+void getNonBlank();
+int lex();
+/* Character classes */
+#define LETTER 0
+#define DIGIT 1
+#define UNKNOWN 99
+/* Token codes */
+#define INT_LIT 10
+#define IDENT 11
+#define ASSIGN_OP 20
+#define ADD_OP 21
+#define SUB_OP 22
+#define MULT_OP 23
+#define DIV_OP 24
+#define LEFT_PAREN 25
+#define RIGHT_PAREN 26
+/******************************************************
+/* main driver */
+main() {
+/* Open the input data file and process its contents */
+if ((in_fp = fopen("front.in", "r")) == NULL)
+printf("ERROR - cannot open front.in \n");
+else {
+getChar();
+do {
+lex();
+} while (nextToken! = EOF);
+}
+}
+/*****************************************************/
+/* lookup - a function to lookup operators and parentheses
+and return the token */
+int lookup(char ch) {
+switch (ch) {
+case '(':
+addChar();
+nextToken = LEFT_PAREN;
+break;
+case ')':
+addChar();
+nextToken = RIGHT_PAREN;
+break;
+case '+':
+addChar();
+nextToken = ADD_OP;
+break;
+case '-':
+addChar();
+nextToken = SUB_OP;
+break;
+case '*':
+addChar();
+nextToken = MULT_OP;
+break;
+case '/':
+addChar();
+nextToken = DIV_OP;
+break;
+default:
+addChar();
+nextToken = EOF;
+break;
+}
+return nextToken;
+}
+
+
+/*****************************************************************************/
+
+#include <stdio.h>
+The standard I/O library
+
+#include <ctype.h>
+Function declarations for character handling
+
+Int charClass;
+Declares a global or local integer value
+
+char lexeme [100];
+Declares an array of characters
+
+Char nextChar;
+Defines a single character variable
+
+int lexLen;
+Declares an integer variable name
+
+int token;
+Declares an integer variable name
+
+int nextToken;
+Declares an integer variable name
+
+FILE *in_fp, *fopen();
+Declaration involves file handling
+
+void addChar();
+Function used to add a character to the current lexeme
+
+void getChar();
+ Function  used to fetch the next character from the input stream
+void getNonBlank();
+function skips whitespace characters and moves to the next non-whitespace character
+
+int lex();
+function declaration that defines a function name
+
+#define LETTER 0
+Classify alphabetic characters
+
+#define DIGIT 1
+Classify numeric characters
+
+#define UNKNOWN 99
+Represents any other character
+
+#define INT_LIT 10
+Represents integer numbers
+
+#define IDENT 11
+Represents variable names
+
+#define ASSIGN_OP 20
+Represents the assignment operator (=)
+
+#define ADD_OP 21
+Represents the addition operator (+)
+
+#define SUB_OP 22
+Represents the subtraction operator (-)
+
+#define MULT_OP 23
+Represents the multiplication operator (*)
+
+
+#define DIV_OP 24
+Represents the division operator (/)
+
+#define LEFT_PAREN 25
+Represents an opening parenthesis ( ( )
+
+#define RIGHT_PAREN 26
+Represents a closing parenthesis ( ) )
+
+main()
+Entry point of any program
+
+{
+Opens the body of main()
+
+if ((in_fp = fopen("front.in", "r")) == NULL))
+Statement used to open a file for reading and check if the file was successfully opened
+
+printf("ERROR - cannot open front.in \n");
+Statement used to print an error message when a file cannot be opened
+
+else {
+Executed when the condition in the if statement evaluates to false 
+
+getChar()
+Function reads one character from the user input
+
+do  {
+A looping construct ensures the block of code executes at least once
+
+lex();
+A function call to a lexer function
+
+
+
+} while (nextToken != EOF);
+used to continuously process tokens from a file until the end of file is reached
+
+   }
+} 
+Ends the else and do loop
+
+int lookup(char ch) {
+used to classify single character tokens
+
+switch (ch) {
+used to classify operators, symbols, and punctuation marks into token types
+
+case ‘(‘:
+Used to identify the left parenthesis character
+
+addChar();
+Used in a lexer to add the current character
+
+nextToken = LEFT_PAREN;
+is part of a  lexer and is used when the lexer identifies the character '(' (left parenthesis). 
+
+break;
+Used to exit a loop or a switch statement
+
+case ‘)’;
+Used to identify the right parenthesis character
+
+addChar();
+Used in a lexer to add the current character
+
+
+  nextToken = RIGHT_PAREN;
+is part of a  lexer and is used when the lexer identifies the character ')' (right parenthesis). 
+
+break;
+Used to exit a loop or a switch statement
+
+Case ‘+’:
+Statement to detect and classify the addition operator (+) in a lexer
+
+addChar();
+Used in a lexer to add the current character
+
+nextToken = ADD_OP;
+used in a lexer  to indicate  the addition operator (+)
+
+break;
+Used to exit a loop or a switch statement
+
+case ‘-‘:
+Statement in a lexer to identify and classify the subtraction operator (-)
+
+addChar();
+Used in a lexer to add the current character
+
+nextToken = SUB_OP;
+Used in a lexer to indicate the subtraction operator (-)
+
+break;
+Used to exit a loop or a switch statement
+
+Case ‘*’:
+Statement in a lexer to identify and classify the multiplication operator (*)
+
+addChar();
+Used in a lexer to add the current character
+
+nextToken = MULT_OP;
+Used in a lexer to indicate the multiplication operator (*)
+
+break;
+Used to exit a loop or a switch statement
+
+Case ‘/’:
+Statement in a lexer to identify and classify the division operator (/)
+
+addChar();
+Used in a lexer to add the current character
+
+nextToken = DIV_OP;
+Used in a lexer to indicate the division operator (/)
+
+break;
+Used to exit a loop or a switch statement
+
+default:
+Executed when no other case matches the input
+
+addChar();
+Used in a lexer to add the current character
+
+nextToken = EOF;
+used in a lexer  to indicate that the end of the file  has been reached
+
+break;
+Used to exit a loop or a switch statement
+
+
+
+}  return nextToken;
+Statement used in  lexers to return the token type
+
+}
+To close the switch loop
+
+void addChar() {
+Function to add next character
+
+if ( lexLen  <=98) {
+Statement that checks if the value of the variable less than or equal to 98
+
+lexeme[lexLen++] = nextChar;
+An array to store characters
+
+lexeme[lexLen] = 0;
+Assigns the value 0 to the lexeme array
+
+}
+Closes the void loop
+
+else
+if-else condition to specify what should happen if the if condition is false
+
+printf("Error - lexeme is too long \n”);
+prints an error message  when the lexeme  exceeds a certain length
+
+}
+Closes the if loop
+
+void getChar() { 
+Function to get the next character in the input 
+
+
+
+if ((nextChar = getc(in_fp) == EOF)  {
+If the condition is true the file has reached its end
+
+if (isalpha(nextChar))
+Statement checks if nextChar is an alphabetic character
+
+
+charClass = LETTER;
+Statement assigns the value to the variable
+
+else if (isdigit(nextChar))
+Checks if nextChar is a digit
+
+charClass = DIGIT;
+Assigns the value to the variable
+
+else charClass = UNKNOWN;
+Assigns the value to the charClass when a character does not match
+
+}
+Closes the void loop
+
+else
+if-else condition to specify what should happen if the if condition is false
+
+charClass = EOF;
+To indicate that the end of the file has been reached
+
+}
+Closes the if loop
+
+void getNonBlank(){
+Function to call getChar until it returns a non-whitespace character 
+
+
+while (isspace(nextChar))
+checks if nextChar is whitespace character and continues looping while it is true
+
+getChar();
+Statement to call the function
+
+}
+Closes the void loop
+
+Int lex() {
+Function used for lexical analysis
+
+lexLen = 0;
+Statement sets lexLen to 0
+
+getNonBlank();
+Statement used to call the function
+
+switch (charClass) {
+Statement that starts a switch to chexk the value of charClass
+
+case LETTER:
+case inside a switch statement
+
+addChar();
+Statement that calls the function
+
+getChar();
+Statement that calls the function to read the next character
+
+
+
+
+
+while (charClass == LETTER || charClass == DIGIT) {
+While loop that continues executing as charClass is either LETTER or DIGIT
+
+addChar();
+Statement that calls the function
+
+getChar();
+Statement that calls the function to read the next character
+
+}
+Closes the switch loop
+
+nextToken = IDENT;
+Assigns the value to the variable
+
+break;
+Used to exit a loop or a switch statement
+
+case DIGIT:
+Case inside a switch statement
+
+addChar();
+Statement that calls the function
+
+getChar();
+Statement that calls the function to read the next character
+
+while (charClass == DIGIT) {
+While loop that continues executing as charClass is equal to DIGIT
+
+addChar();
+Statement that calls the function
+
+
+getChar();
+Statement that calls the function to read the next character
+
+}
+Closes the while loop
+
+nextToken = INT_LIT;
+Assigns the token type to the variable nextToken
+
+break;
+Used to exit a loop or a switch statement
+
+case UNKNOWN:
+Case inside a switch statement
+
+lookup(nextChar);
+Calls the function and determine if nextChar is an operator or delimiter
+
+getChar();
+Statement that calls the function to read the next character
+
+break;
+Used to exit a loop or a switch statement
+
+case EOF:
+Case inside a switch statement
+
+nextToken = EOF;
+Assigns the EOF to the nextToken and that the lexer has reached the end of input
+
+lexeme[0] = 'E';
+Assigns the character E to the lexeme array at index 0
+
+
+lexeme[1] = 'O';
+Assigns the character O to the lexeme array at index 1
+
+lexeme[2] = 'F';
+Assigns the character F to the lexeme array at index 2
+
+lexeme[3] = 0;
+Assigns 0 making the end of a string at index 3 in the lexeme array
+
+break;
+Used to exit a loop or a switch statement
+
+}
+End of the switch
+
+printf("Next token is: %d, Next lexeme is %s\n", nextToken, lexeme);
+Prints the token type and the lexeme during lexical analysis
+
+return nextToken;
+Returns the token type from the lexical analyzer to the calling function
+
+}
+End of the function
+
+
+The code illustrates the relative simplicity of lexical analyzers
+
+
+
+
+Input:
+x = 10 + 20 * y;
+
+Output:
+Next token: 11, Next lexeme: x
+Next token: UNKNOWN, Next lexeme: =
+Next token: 10, Next lexeme: 10
+Next token: 21, Next lexeme: +
+Next token: 10, Next lexeme: 20
+Next token: 23, Next lexeme: *
+Next token: 11, Next lexeme: y
+Next token: UNKNOWN, Next lexeme: ;
+Next token: -1, Next lexeme: 
+
